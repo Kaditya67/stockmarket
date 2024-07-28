@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "./components/layout/Navbar";
 import Index from "./components/pages/landingpage/Index";
 
+
 function App() {
   return (
     <>
