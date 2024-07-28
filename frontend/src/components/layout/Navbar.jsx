@@ -27,16 +27,21 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <ul className="flex space-x-4">
-          <li>
-            <a
-              href="#"
-              className="hover:text-gray-600 transition duration-200"
-            >
-              Login/SignUp
-            </a>
-          </li>
-        </ul>
+        <div className="flex space-x-1">
+          <a
+            href="login/"
+            className="hover:text-gray-600 transition duration-200 text-purple-800 font-bold"
+          >
+            Login
+          </a>
+          <span>/</span>
+          <a
+            href="/signup"
+            className="hover:text-gray-600 transition duration-200 text-purple-800 font-bold"
+          >
+            Sign Up
+          </a>
+        </div>
       </div>
     </nav>
   );
