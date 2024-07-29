@@ -27,6 +27,7 @@ function Charts() {
   const chartStyle = {
     display: 'inline-block',
     width: '450px',
+    height: '400px', // Increased height
     padding: '10px',
     margin: '0 15px', 
   };
@@ -34,7 +35,7 @@ function Charts() {
   const containerStyle = {
     textAlign: 'center',
     margin: '0 auto',
-    paddingTop: '20px', 
+    paddingTop: '40px', // Increased padding on top
   };
 
   return (
