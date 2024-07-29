@@ -1,5 +1,6 @@
 import Navbar from './components/layout/Navbar';
 import Index from './components/pages/landingpage/index';
+import Charts from './components/pages/landingpage/Charts'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         </div>
       </div>
       <Index />
+      <Charts />
     </>
   );
 }
