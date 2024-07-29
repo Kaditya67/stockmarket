@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Chart from "react-apexcharts";
 
 function Charts() {
@@ -39,6 +39,10 @@ function Charts() {
   };
 
   return (
+    <>
+    <div className="flex items-center justify-center text-3xl">
+      Charts
+    </div>
     <div style={containerStyle}>
       <h1>
         <i className="fas fa-user"></i>{" "}
@@ -49,7 +53,7 @@ function Charts() {
             options={state.options}
             series={state.series}
             type="bar"
-            width="450"
+            width="480"
           />
         </div>
         <div style={chartStyle}>
@@ -57,11 +61,12 @@ function Charts() {
             options={state.options}
             series={state.series}
             type="area"
-            width="450"
+            width="480"
           />
         </div>
       </div>
     </div>
+    </>
   );
 }
 

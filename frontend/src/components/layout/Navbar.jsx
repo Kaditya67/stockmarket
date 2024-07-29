@@ -10,37 +10,36 @@ const Navbar = () => {
           </div>
           <ul className="flex space-x-4">
             <li>
-              <a
+              {/* <a
                 href="#"
                 className="hover:text-gray-600 transition duration-200"
               >
                 Feature
-              </a>
+              </a> */}
             </li>
             <li>
-              <a
+              {/* <a
                 href="#"
                 className="hover:text-gray-600 transition duration-200"
               >
                 Strategy
-              </a>
+              </a> */}
             </li>
           </ul>
         </div>
         <div className="flex space-x-1">
           <a
             href="login/"
-            className="hover:text-gray-600 transition duration-200 text-purple-800 font-bold"
+            className="hover:text-gray-600 transition duration-200 text-black-800 text-lg"
           >
             Login
           </a>
-          <span>/</span>
-          <a
+          {/* <a
             href="/signup"
-            className="hover:text-gray-600 transition duration-200 text-purple-800 font-bold"
+            className="hover:text-gray-600 transition duration-200 text-black-800"
           >
-            Sign Up
-          </a>
+            /SignUp
+          </a> */}
         </div>
       </div>
     </nav>

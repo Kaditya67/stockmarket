@@ -31,23 +31,19 @@ const Body = () => {
 
   return (
     <div>
-      <div className="bg-[#D1C4E9] mx-35 my-8 p-6 flex flex-col items-center justify-center h-[75vh] rounded-lg shadow-lg">
-        <h1 className="text-white text-3xl font-bold mb-4"></h1>
-        <div className="relative w-[60%] h-[70vh] py-7 rounded-[8px] shadow-6xl overflow-hidden">
-          <img
-            src={Image}
-            alt="Stock Market"
-            className="w-full h-full object-cover transition-transform duration-500 ease-in-out transform hover:scale-105"
-          />
-        </div>
+      <div className="bg-gradient-to-br from-gray-800 to-[#1BE7FF] my-8 p-8 flex flex-col items-center justify-center h-[75vh] shadow-xl">
+        <h1 className="text-white text-4xl font-bold mb-6">Welcome to Our Trading Platform</h1>
+        
+        <button className="mt-8 px-6 py-3 bg-white text-black font-semibold rounded-full shadow-md hover:bg-gray-200 transition duration-300 ease-in-out">
+          Discover the Power of Investing Today!
+        </button>
       </div>
 
       {/* Sticky Wrapper */}
-      <div className={`relative ${isSticky ? 'sticky top-0 bg-white z-10' : ''}`}>
-        <div className="flex justify-center p-6">
+      <div className={`relative ${isSticky ? 'sticky top-0 bg-black z-10 shadow-md' : ''}`}>
+        <div className="flex justify-center py-4 bg-[#F4F4F9]-900">
           <div className="flex space-x-20">
-            <span className="text-purple-800 text-2xl font-semibold">Invest</span>
-            <span className="text-purple-800 text-2xl font-semibold">Trade</span>
+            <span className="text-black text-3xl font-semibold ">Invest in Best with Us</span>
           </div>
         </div>
       </div>
@@ -59,14 +55,14 @@ const Body = () => {
               <img
                 src={Image2}
                 alt="Invest Image"
-                className="w-full h-full object-cover transition-transform duration-500 ease-in-out transform hover:scale-105"
+                className="w-full h-full object-cover"
               />
             </div>
           </div>
           <div className="w-[40%] p-4 flex flex-col items-center justify-center">
-            <p className="text-gray-800 text-xl font-bold mb-4">Invest like a pro</p>
-            <ul className="text-gray-800 text-lg list-disc list-inside space-y-2">
-              <li>Research and analyze the market trends</li>
+            <p className="text-[#201E1F]-200 text-xl font-bold mb-4">Invest like a pro</p>
+            <ul className="text-[#201E1F]-300 text-lg list-disc list-inside space-y-2">
+              <li>Research and analyze market trends</li>
               <li>Diversify your investment portfolio</li>
               <li>Set clear investment goals and stick to them</li>
               <li>Stay updated with financial news</li>
@@ -79,8 +75,8 @@ const Body = () => {
       <div id="images-end" className="flex justify-center items-center mt-8 p-8">
         <div className="flex w-full max-w-4xl">
           <div className="w-[40%] p-4 flex flex-col items-center justify-center">
-            <p className="text-gray-800 text-xl font-bold mb-4">This sight is pro for traders</p>
-            <ul className="text-gray-800 text-lg list-disc list-inside space-y-2">
+            <p className="text-[#201E1F]-200 text-xl font-bold mb-4">This site is pro for traders</p>
+            <ul className="text-[#201E1F]-300 text-lg list-disc list-inside space-y-2">
               <li>Use technical analysis for better decision-making</li>
               <li>Keep track of trading volumes and price trends</li>
               <li>Implement risk management strategies</li>
@@ -93,7 +89,7 @@ const Body = () => {
               <img
                 src={Image3}
                 alt="Trade Image"
-                className="w-full h-full object-cover transition-transform duration-500 ease-in-out transform hover:scale-105"
+                className="w-full h-full object-cover"
               />
             </div>
           </div>
