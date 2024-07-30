@@ -2,6 +2,8 @@ import Navbar from "./components/layout/Navbar";
 import Index from "./components/pages/landingpage/index";
 import Charts from "./components/pages/landingpage/Charts";
 import Graph from "./components/pages/landingpage/Graph";
+import Features from "./components/pages/landingpage/Features"
+
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
       <Index />
       <Charts />
       <Graph />
+      <Features />
     </>
   );
 }
