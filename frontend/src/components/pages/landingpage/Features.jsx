@@ -1,38 +1,42 @@
 import React from 'react';
+import Image4 from '../../../assets/images/Image4.jpg';
+import Image5 from '../../../assets/images/Image5.jpg';
 
-const Card = ({ title, text, image }) => {
+const Features = () => {
   return (
-    <div className="shadow-lg m-4 bg-white text-black rounded-lg" style={{ width: '350px', height: '450px' }}>
-      <img className="w-full h-3/4 object-cover" src={image} alt={title} />
-      <div className="p-4 h-1/4 flex flex-col justify-between">
-        <h5 className="font-bold text-xl mb-2">{title}</h5>
-        <p className="text-gray-700 text-sm">{text}</p>
-      </div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <section id="features" className="py-4 w-full max-w-6xl">
+        <div className="container mx-auto px-4 bg-gray-100">
+          <h2 className="text-center text-3xl mb-10 mt-3">Features</h2>
+          
+          <div className="flex flex-wrap justify-center -mx-4">
+            <div className="w-full md:w-1/3 px-4 mb-5 mx-5">
+              <div className="card shadow-lg rounded-lg overflow-hidden">
+                <img src={Image4} className="card-img-top w-full h-48 object-cover" alt="Feature 1 Image" />
+                <div className="p-4 pt-2">
+                  <h5 className="text-xl font-semibold mb-6">Effortless Stock Analysis</h5>
+                  <p className="text-gray-700">
+                    Search for stocks, choose analysis periods, and gain insights through clear visualizations of trends and technical indicators - all within a user-friendly interface.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="w-full md:w-1/3 px-4 mb-4 mx-4">
+              <div className="card shadow-lg rounded-lg overflow-hidden">
+                <img src={Image5} className="card-img-top w-full h-48 object-cover" alt="Feature 2 Image" />
+                <div className="p-4 pt-2">
+                  <h5 className="text-xl font-semibold mb-6">Data-Driven Decisions</h5>
+                  <p className="text-gray-700">
+                    Leverage TrendSight's calculations of technical indicators like EMAs and potentially RSI to understand market behavior and make informed investment choices.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
 
-const Cards = () => {
-  const data = [
-    {
-      title: 'Card title 1',
-      text: 'Some quick example text to build on the card title and make up the bulk of the card\'s content.',
-      image: 'https://via.placeholder.com/300x200.png?text=Image+1',
-    },
-    {
-      title: 'Card title 2',
-      text: 'Some quick example text to build on the card title and make up the bulk of the card\'s content.',
-      image: 'https://via.placeholder.com/300x200.png?text=Image+2',
-    },
-  ];
-
-  return (
-    <div className="flex flex-wrap justify-center p-6">
-      {data.map((item, index) => (
-        <Card key={index} title={item.title} text={item.text} image={item.image} />
-      ))}
-    </div>
-  );
-};
-
-export default Cards;
+export default Features;

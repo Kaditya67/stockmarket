@@ -2,7 +2,8 @@ import Navbar from "./components/layout/Navbar";
 import Index from "./components/pages/landingpage/index";
 import Charts from "./components/pages/landingpage/Charts";
 import Graph from "./components/pages/landingpage/Graph";
-import Features from "./components/pages/landingpage/Features"
+import Features from "./components/pages/landingpage/Features";
+import Footer from "./components/layout/Footer";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <Charts />
       <Graph />
       <Features />
+      <Footer />
     </>
   );
 }
