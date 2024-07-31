@@ -10,20 +10,20 @@ const Navbar = () => {
           </div>
           <ul className="flex space-x-4">
             <li>
-              {/* <a
-                href="#"
+              <a
+                href="#features"
                 className="hover:text-gray-600 transition duration-200"
               >
                 Feature
-              </a> */}
+              </a>
             </li>
             <li>
-              {/* <a
-                href="#"
+              <a
+                href="#strategy"
                 className="hover:text-gray-600 transition duration-200"
               >
                 Strategy
-              </a> */}
+              </a>
             </li>
           </ul>
         </div>

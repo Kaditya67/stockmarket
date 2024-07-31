@@ -41,14 +41,14 @@ const Body = () => {
 
       {/* Sticky Wrapper */}
       <div className={`relative ${isSticky ? 'sticky top-0 bg-black z-10 shadow-md' : ''}`}>
-        <div className="flex justify-center py-4 bg-[#F4F4F9]-900">
+        <div id="strategy" className="flex justify-center py-4 bg-[#F4F4F9]-900">
           <div className="flex space-x-20">
             <span className="text-black text-3xl font-semibold ">Invest in Best with Us</span>
           </div>
         </div>
       </div>
 
-      <div id="images-section" className="flex justify-center items-center mt-8">
+      <div id="image-start" className="flex justify-center items-center mt-8">
         <div className="flex w-full max-w-4xl">
           <div className="w-[60%] p-4">
             <div className="relative w-full h-[60vh] overflow-hidden rounded-[7px] shadow-lg">
