@@ -4,9 +4,9 @@ import Image5 from '../../../assets/images/Image5.jpg';
 
 const Features = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <section id="features" className="py-4 w-full max-w-6xl">
-        <div className="container mx-auto px-4 bg-gray-100">
+    <div className="flex items-center justify-center pb-20">
+      <section id="features" className="w-full max-w-6xl">
+        <div className="container mx-auto px-4">
           <h2 className="text-center text-3xl mb-10 mt-3">Features</h2>
           
           <div className="flex flex-wrap justify-center -mx-4">
