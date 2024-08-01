@@ -1,5 +1,3 @@
-import React from "react";
-
 const Navbar = () => {
   return (
     <nav className="text-black py-4 bg-white shadow-md sticky top-0 z-50">

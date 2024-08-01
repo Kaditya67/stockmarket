@@ -1,4 +1,3 @@
-import React from 'react';
 import Image4 from '../../../assets/images/Image4.jpg';
 import Image5 from '../../../assets/images/Image5.jpg';
 
@@ -27,7 +26,7 @@ const Features = () => {
                 <div className="p-4 pt-2">
                   <h5 className="text-xl font-semibold mb-6">Data-Driven Decisions</h5>
                   <p className="text-gray-700">
-                    Leverage TrendSight's calculations of technical indicators like EMAs and potentially RSI to understand market behavior and make informed investment choices.
+                    Leverage calculations of technical indicators like EMAs and potentially RSI to understand market behavior and make informed investment choices.
                   </p>
                 </div>
               </div>
