@@ -1,4 +1,4 @@
-const Navbar = () => {
+const Navbar = ({ onLoginClick }) => {
   return (
     <nav className="text-black py-4 bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center px-4">
@@ -26,18 +26,18 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="flex space-x-1">
-          <a
-            href="login/"
+          <button
+            onClick={onLoginClick}
             className="hover:text-gray-600 transition duration-200 text-black-800 text-lg"
           >
             Login
-          </a>
-          {/* <a
+          </button>
+          <a
             href="/signup"
             className="hover:text-gray-600 transition duration-200 text-black-800"
           >
             /SignUp
-          </a> */}
+          </a>
         </div>
       </div>
     </nav>
