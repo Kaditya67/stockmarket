@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 
 const Login = () => {
@@ -57,7 +55,7 @@ const Login = () => {
             </div>
           </form>
           <p className="mt-6 text-center text-sm text-gray-600">
-            Don't have an account? <a href="#" className="text-blue-500 hover:text-blue-800">Sign Up</a>
+            Don't have an account? <a href="#SignUp" className="text-blue-500 hover:text-blue-800">Sign Up</a>
           </p>
         </div>
       </div>
