@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from "./components/layout/Navbar";
 import Index from "./components/pages/landingpage/index";
 import Charts from "./components/pages/landingpage/Charts";
@@ -9,29 +9,41 @@ import Footer from "./components/layout/Footer";
 import Login from "./components/pages/loginpage/Login";
 import SignUp from './components/pages/signuppage/SignUp';
 
+function LandingPage() {
+  return (
+    <>
+      <Index />
+      <Charts />
+      <Graph />
+      <Features />
+      <Footer />
+    </>
+  );
+}
+
 function App() {
   const [showLogin, setShowLogin] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
 
   const handleLoginClick = () => {
     setShowLogin(true);
+    setShowSignUp(false); // Close Sign Up if it's open
+  };
+
+  const handleSignupClick = () => {
+    setShowSignUp(true);
+    setShowLogin(false); // Close Login if it's open
   };
 
   return (
-    <>
-      <Navbar onLoginClick={handleLoginClick} />
-      {showLogin ? (
-        <Login />
-      ) : (
-        <>
-          <Index />
-          <Charts />
-          <Graph />
-          <Features />
-          <Footer />
-          <SignUp />
-        </>
-      )}
-    </>
+    <Router>
+      <Navbar onLoginClick={handleLoginClick} onSignupClick={handleSignupClick} />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </Router>
   );
 }
 

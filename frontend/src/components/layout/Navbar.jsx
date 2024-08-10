@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = ({ onLoginClick, onSignupClick }) => {
   return (
@@ -6,39 +6,21 @@ const Navbar = ({ onLoginClick, onSignupClick }) => {
       <div className="container mx-auto flex justify-between items-center px-4">
         <div className="flex items-center space-x-8">
           <div className="text-lg font-bold">
-            MyApp
+          <Link to="/">StockVista</Link>
           </div>
-          <ul className="flex space-x-4">
-            <li>
-              <a
-                href="#features"
-                className="hover:text-gray-600 transition duration-200"
-              >
-                Feature
-              </a>
-            </li>
-            <li>
-              <a
-                href="#strategy"
-                className="hover:text-gray-600 transition duration-200"
-              >
-                Strategy
-              </a>
-            </li>
-          </ul>
         </div>
         <div className="flex space-x-1">
           <button
             onClick={onLoginClick}
-            className="hover:text-gray-600 transition duration-200 text-black-800 text-lg"
+            className="hover:text-gray-600 transition duration-200 text-black-800 text-md"
           >
-            Login/
+            <Link to="/login">Login</Link>
           </button>
           <button
             onClick={onSignupClick}
-            className="hover:text-gray-600 transition duration-200 text-black-800 text-lg"
+            className="hover:text-gray-600 transition duration-200 text-black-800 text-md pl-4"
           >
-            Sign Up
+            <Link to="/signup">Sign Up</Link>
           </button>
         </div>
       </div>

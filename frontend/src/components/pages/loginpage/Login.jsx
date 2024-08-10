@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -16,10 +17,7 @@ const Login = () => {
       <div className="container max-w-sm bg-white bg-opacity-80 p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
 
-        {/* Form */}
         <form onSubmit={handleSubmit}>
-          <input type="hidden" name="csrfmiddlewaretoken" value="8crl7aU2n9gecSFn2CWosUYUwGgdRZKnuV6KxEewh3NgiPA7PPvCf5yizmsVERZv" />
-          
           <div className="mb-4">
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">User ID</label>
             <input
@@ -32,7 +30,7 @@ const Login = () => {
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-          
+
           <div className="mb-4">
             <label htmlFor="loginPassword" className="block text-sm font-medium text-gray-700">Password</label>
             <input
@@ -45,18 +43,18 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          
+
           <div className="mb-4 text-right">
-            <a href="/forgotpassword/" className="text-sm text-indigo-600 hover:underline">Forgot Password?</a>
+            <Link to="/forgotpassword" className="text-sm text-indigo-600 hover:underline">Forgot Password?</Link>
           </div>
-          
+
           <button type="submit" className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-300">
             Login
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm">
-          Don't have an account? <a href="/SignUp/" className="text-indigo-600 hover:underline">Sign up</a>
+          Don't have an account? <Link to="/signup" className="text-indigo-600 hover:underline">Sign up</Link>
         </p>
       </div>
     </div>
