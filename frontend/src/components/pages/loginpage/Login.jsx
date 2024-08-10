@@ -1,63 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    console.log('Username:', username);
+    console.log('Password:', password);
+  };
+
   return (
-    <div className="flex min-h-screen bg-pink-200">
-      <div className="flex flex-1 justify-center items-center p-8">
-        <div className="w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-6">Login</h2>
-          <form>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-                Username
-              </label>
-              <input
-                id="username"
-                type="text"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Username"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Password"
-              />
-            </div>
-            <div className="mb-4 flex items-center">
-              <input
-                id="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                Remember me
-              </label>
-            </div>
-            <div className="flex items-center justify-between">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-              >
-                Sign In
-              </button>
-              <a
-                href="#"
-                className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-              >
-                Forgot Password?
-              </a>
-            </div>
-          </form>
-          <p className="mt-6 text-center text-sm text-gray-600">
-            Don't have an account? <a href="#SignUp" className="text-blue-500 hover:text-blue-800">Sign Up</a>
-          </p>
-        </div>
+    <div className="flex items-center justify-center min-h-screen bg-cover bg-center" style={{ backgroundImage: `url('/static/images/stock-market.png')` }}>
+      <div className="container max-w-sm bg-white bg-opacity-80 p-6 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit}>
+          <input type="hidden" name="csrfmiddlewaretoken" value="8crl7aU2n9gecSFn2CWosUYUwGgdRZKnuV6KxEewh3NgiPA7PPvCf5yizmsVERZv" />
+          
+          <div className="mb-4">
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">User ID</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter Username"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          
+          <div className="mb-4">
+            <label htmlFor="loginPassword" className="block text-sm font-medium text-gray-700">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              name="password"
+              placeholder="Password"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          
+          <div className="mb-4 text-right">
+            <a href="/forgotpassword/" className="text-sm text-indigo-600 hover:underline">Forgot Password?</a>
+          </div>
+          
+          <button type="submit" className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-300">
+            Login
+          </button>
+        </form>
+
+        <p className="mt-6 text-center text-sm">
+          Don't have an account? <a href="/SignUp/" className="text-indigo-600 hover:underline">Sign up</a>
+        </p>
       </div>
     </div>
   );

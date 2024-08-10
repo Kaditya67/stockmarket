@@ -1,4 +1,6 @@
-const Navbar = ({ onLoginClick }) => {
+import React from 'react';
+
+const Navbar = ({ onLoginClick, onSignupClick }) => {
   return (
     <nav className="text-black py-4 bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center px-4">
@@ -30,14 +32,14 @@ const Navbar = ({ onLoginClick }) => {
             onClick={onLoginClick}
             className="hover:text-gray-600 transition duration-200 text-black-800 text-lg"
           >
-            Login
+            Login/
           </button>
-          <a
-            href="/signup"
-            className="hover:text-gray-600 transition duration-200 text-black-800"
+          <button
+            onClick={onSignupClick}
+            className="hover:text-gray-600 transition duration-200 text-black-800 text-lg"
           >
-            /SignUp
-          </a>
+            Sign Up
+          </button>
         </div>
       </div>
     </nav>
