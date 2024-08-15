@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// connect to mongoDb
+// Connect to MongoDB
 connectToMongoDb();
 
 // Middleware to parse JSON
@@ -20,6 +20,5 @@ app.use('/api/stocks', stockRoutes);
 
 // Start the server
 app.listen(PORT, () => {
-    connectToMongoDb();
     console.log(`Server is running on port ${PORT}`);
 });

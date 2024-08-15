@@ -1,34 +1,64 @@
 import express from 'express';
 import axios from 'axios';
+import StockData from '../models/StockData.js';
+import stockServices from '../services/stockServices.js';
 
 const router = express.Router();
 
-// Hardcoded API key
-const apiKey = '1K4GU49H6ZW12W5Q';
-
 // List of hardcoded stock symbols
-const symbols = ['AAPL', 'GOOGL', 'MSFT'];  // Add any other symbols you'd like
+const symbols = ['AAPL', 'GOOGL', 'MSFT'];
 
-// Endpoint to fetch and print stock data for the hardcoded symbols
+// Utility function to validate stock data
+const isValidStockData = (data) => {
+    return data &&
+        typeof data['1. open'] === 'string' &&
+        typeof data['2. high'] === 'string' &&
+        typeof data['3. low'] === 'string' &&
+        typeof data['4. close'] === 'string' &&
+        typeof data['5. volume'] === 'string';
+};
+
+// Endpoint to fetch and store stock data for the hardcoded symbols
 router.get('/multiple', async (req, res) => {
-    const results = {};
-
     try {
         for (const symbol of symbols) {
-            const response = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${apiKey}`);
+            const timeSeries = stockServices();
 
-            // Print the JSON data for each symbol to the console
-            console.log(`Data for ${symbol}:`, JSON.stringify(response.data, null, 2));
+            // Check if the timeSeries exists before processing
+            if (timeSeries) {
+                for (const [date, values] of Object.entries(timeSeries)) {
+                    if (isValidStockData(values)) {
+                        // Create a new StockData document
+                        const stockData = new StockData({
+                            symbol,
+                            date: new Date(date),
+                            open: parseFloat(values['1. open']),
+                            high: parseFloat(values['2. high']),
+                            low: parseFloat(values['3. low']),
+                            close: parseFloat(values['4. close']),
+                            volume: parseInt(values['5. volume']),
+                        });
 
-            // Store the data in the results object (if needed)
-            results[symbol] = response.data;
+                        // Save the document to MongoDB
+                        await stockData.save();
+                    } else {
+                        console.warn(`Invalid data for ${symbol} on ${date}:`, values);
+                    }
+                }
+            } else {
+                console.warn(`No time series data available for ${symbol}`);
+            }
+
+            console.log(`Data for ${symbol} has been processed.`);
         }
 
-        // Optionally send a response to confirm completion
-        res.status(200).json({ message: 'Data fetched and printed to console' });
+        res.status(200).json({ message: 'Data fetched and stored in MongoDB successfully' });
     } catch (error) {
-        res.status(500).json({ error: 'Error fetching stock data' });
+        console.error("Error storing stock data:", error.message);
+        res.status(500).json({ error: 'Error fetching or storing stock data' });
     }
 });
 
 export default router;
+
+
