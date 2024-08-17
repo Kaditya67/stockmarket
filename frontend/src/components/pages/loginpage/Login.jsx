@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
@@ -13,7 +13,10 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-cover bg-center" style={{ backgroundImage: `url('/static/images/stock-market.png')` }}>
+    <div 
+      className="flex items-center justify-center min-h-screen bg-cover bg-center" 
+      style={{ backgroundImage: `url('/static/images/stock-market.png')` }} // Ensure `url()` is a string
+    >
       <div className="container max-w-sm bg-white bg-opacity-80 p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
 

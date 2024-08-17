@@ -8,6 +8,7 @@ import Features from "./components/pages/landingpage/Features";
 import Footer from "./components/layout/Footer";
 import Login from "./components/pages/loginpage/Login";
 import SignUp from './components/pages/signuppage/SignUp';
+import StockDataPage from './components/pages/StockDataPage';
 
 function LandingPage() {
   return (
@@ -32,7 +33,7 @@ function App() {
 
   const handleSignupClick = () => {
     setShowSignUp(true);
-    setShowLogin(false); // Close Login if it's open
+    setShowLogin(false); 
   };
 
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/api/stocks/data" element={<StockDataPage />} />
       </Routes>
     </Router>
   );

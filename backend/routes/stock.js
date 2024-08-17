@@ -5,6 +5,9 @@ import stockServices from '../services/stockServices.js';
 
 const router = express.Router();
 
+// API key from environment variables
+const apiKey = process.env.ALPHA_VANTAGE_API_KEY;
+
 // List of hardcoded stock symbols
 const symbols = ['AAPL', 'GOOGL', 'MSFT'];
 
@@ -59,6 +62,15 @@ router.get('/multiple', async (req, res) => {
     }
 });
 
+// Endpoint to fetch stock data from the database
+router.get('/data', async (req, res) => {
+    try {
+        const stocks = await StockData.find().sort({ date: -1 }); // Sort by date in descending order
+        res.status(200).json(stocks);
+    } catch (error) {
+        console.error("Error fetching stock data from MongoDB:", error.message);
+        res.status(500).json({ error: 'Error fetching stock data from MongoDB' });
+    }
+});
+
 export default router;
-
-
