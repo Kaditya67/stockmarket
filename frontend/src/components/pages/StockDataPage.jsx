@@ -10,7 +10,7 @@ const StockDataPage = () => {
         const fetchData = async () => {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL;
-                const response = await axios.get(`${apiUrl}/api/stocks/data`);
+                const response = await axios.get(${apiUrl}/api/stocks/data);
                 
                 // Log the received data to the console
                 console.log('Received stock data from API:', response.data);
