@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+// StockData Schema
 const stockDataSchema = new mongoose.Schema({
     symbol: { type: String, required: true }, // Stock symbol
     date: { type: Date, required: true },     // Date of the stock data
@@ -12,4 +13,19 @@ const stockDataSchema = new mongoose.Schema({
 
 const StockData = mongoose.model('StockData', stockDataSchema);
 
-export default StockData;
+// EmaData Schema
+const emaDataSchema = new mongoose.Schema({
+    symbol: { type: String, required: true }, // Stock symbol
+    date: { type: Date, required: true },     // Date of the EMA calculation
+    ema7: { type: Number, required: true },
+    ema20: { type: Number, required: true },
+    ema50: { type: Number, required: true },
+    ema100: { type: Number, required: true },
+    ema150: { type: Number, required: true },
+    ema200: { type: Number, required: true },
+});
+
+const EmaData = mongoose.model('EmaData', emaDataSchema);
+
+// Exporting the models
+export { StockData, EmaData };
