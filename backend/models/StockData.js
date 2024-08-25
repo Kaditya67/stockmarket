@@ -17,12 +17,12 @@ const StockData = mongoose.model('StockData', stockDataSchema);
 const emaDataSchema = new mongoose.Schema({
     symbol: { type: String, required: true }, // Stock symbol
     date: { type: Date, required: true },     // Date of the EMA calculation
-    ema7: { type: Number, required: true },
-    ema20: { type: Number, required: true },
-    ema50: { type: Number, required: true },
-    ema100: { type: Number, required: true },
-    ema150: { type: Number, required: true },
-    ema200: { type: Number, required: true },
+    ema7: { type: Number, required: false },  // Make these fields optional
+    ema20: { type: Number, required: false },
+    ema50: { type: Number, required: false },
+    ema100: { type: Number, required: false },
+    ema150: { type: Number, required: false },
+    ema200: { type: Number, required: false },
 });
 
 const EmaData = mongoose.model('EmaData', emaDataSchema);
