@@ -9,6 +9,7 @@ import Footer from "./components/layout/Footer";
 import Login from "./components/pages/loginpage/Login";
 import SignUp from './components/pages/signuppage/SignUp';
 import StockDataPage from './components/pages/StockDataPage';
+import StockChart from './components/pages/StockChart';
 
 function LandingPage() {
   return (
@@ -44,7 +45,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/stock-data" element={<StockDataPage />} />
-
+        <Route path="/stock-chart" element={<StockChart />} />
       </Routes>
     </Router>
   );
