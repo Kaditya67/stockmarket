@@ -159,44 +159,65 @@ router.get('/multiple', async (req, res) => {
     }
 });
 
-// Endpoint to fetch stock data from the database
+
+// Endpoint to fetch the latest entry for each symbol
 router.get('/data', async (req, res) => {
     try {
-        const currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() - 1);
+        // Fetch the latest stock data for each symbol
+        const latestStocks = await StockData.find({ symbol: { $in: symbols } })
+            .sort({ symbol: 1, date: -1 })
+            .exec();
 
-        const previousDay = new Date(currentDate.setHours(0, 0, 0, 0));
-        const nextDay = new Date(previousDay);
-        nextDay.setDate(previousDay.getDate() + 1);
-
-        const stocks = await StockData.aggregate([
-            {
-                $match: {
-                    date: {
-                        $gte: previousDay,
-                        $lt: nextDay
-                    }
-                }
-            },
-            {
-                $sort: { date: -1 }
-            },
-            {
-                $group: {
-                    _id: "$symbol",
-                    latestData: { $first: "$$ROOT" }
-                }
-            },
-            {
-                $replaceRoot: { newRoot: "$latestData" }
+        // Map to get the latest entry for each symbol
+        const latestStockMap = latestStocks.reduce((acc, stock) => {
+            if (!acc[stock.symbol] || stock.date > acc[stock.symbol].date) {
+                acc[stock.symbol] = stock;
             }
-        ]);
+            return acc;
+        }, {});
 
-        res.status(200).json(stocks);
+        // Fetch the latest EMA data for each symbol
+        const latestEmas = await EmaData.find({ symbol: { $in: symbols } })
+            .sort({ symbol: 1, date: -1 })
+            .exec();
+
+        // Map to get the latest entry for each symbol
+        const latestEmaMap = latestEmas.reduce((acc, ema) => {
+            if (!acc[ema.symbol] || ema.date > acc[ema.symbol].date) {
+                acc[ema.symbol] = ema;
+            }
+            return acc;
+        }, {});
+
+        // Fetch the latest RSI data for each symbol
+        const latestRsi = await RsiData.find({ symbol: { $in: symbols } })
+            .sort({ symbol: 1, date: -1 })
+            .exec();
+
+        // Map to get the latest entry for each symbol
+        const latestRsiMap = latestRsi.reduce((acc, rsi) => {
+            if (!acc[rsi.symbol] || rsi.date > acc[rsi.symbol].date) {
+                acc[rsi.symbol] = rsi;
+            }
+            return acc;
+        }, {});
+
+        // Combine the latest entries into a single array of JSON objects
+        const combinedData = symbols.map(symbol => ({
+            symbol,
+            stock: latestStockMap[symbol] || {},
+            ema: latestEmaMap[symbol] || {},
+            rsi: latestRsiMap[symbol] || {}
+        }));
+
+        res.status(200).json(combinedData);
     } catch (error) {
-        console.error("Error fetching stock data from MongoDB:", error.message);
-        res.status(500).json({ error: 'Error fetching stock data from MongoDB' });
+        console.error("Error fetching latest data from MongoDB:", error.message);
+        res.status(500).json({ error: 'Error fetching latest data from MongoDB' });
     }
 });
+
+
+
 
 export default router;

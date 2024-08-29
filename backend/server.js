@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import stockRoutes from './routes/stock.js';
 import connectToMongoDb from './db/connectToMongoDb.js';
 import userRoutes from './routes/userRoutes.js';
-import chartRoutes from './routes/chartRoutes.js';
+// import chartRoutes from './routes/chartRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -24,7 +24,7 @@ app.use(cors({
 // Routes
 app.use('/api/stocks', stockRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/charts', chartRoutes);
+// app.use('/api/charts', chartRoutes);
 
 // Global Error Handling Middleware
 app.use((err, req, res, next) => {
