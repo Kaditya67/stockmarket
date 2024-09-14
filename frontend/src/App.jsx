@@ -13,11 +13,14 @@ import DashboardPage from './dashboard/pages/DashboardPage'; // Ensure correct i
 import HomePage from './dashboard/pages/HomePage';
 import StocksPage from './dashboard/pages/StocksPage';
 import ChartPage from './dashboard/pages/ChartPage';
+import SectorPage from './dashboard/pages/SectorPage';
 import AnalysisPage from './dashboard/pages/AnalysisPage';
 import PortfolioPage from './dashboard/pages/PortfolioPage';
 import HelpPage from './dashboard/pages/HelpPage';
 import AboutPage from './dashboard/pages/AboutPage';
 import LogoutPage from './dashboard/pages/LogoutPage';
+import AlertPage from './dashboard/pages/AlertPage';
+import SettingPage from './dashboard/pages/Setting';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -25,7 +28,7 @@ function App() {
 
   const handleLoginClick = () => {
     setShowLogin(true);
-    setShowSignUp(false); // Close Sign Up if it's open
+    setShowSignUp(false); 
   };
 
   const handleSignupClick = () => {
@@ -46,12 +49,16 @@ function App() {
         <Route path="/stock-data" element={<StockDataPage />} />
         <Route path="/stock-chart" element={<StockChart />} />
         <Route path="/dashboard" element={<DashboardPage />}>
+
           {/* Nested routes for the dashboard pages */}
           <Route path="home" element={<HomePage />} />
           <Route path="stocks" element={<StocksPage />} />
           <Route path="charts" element={<ChartPage />} />
+          <Route path="sector" element={<SectorPage />} />
           <Route path="analysis" element={<AnalysisPage />} />
           <Route path="portfolio" element={<PortfolioPage />} />
+          <Route path="alert" element={<AlertPage />} />
+          <Route path="setting" element={<SettingPage />} />
           <Route path="help" element={<HelpPage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="logout" element={<LogoutPage />} />

@@ -1,15 +1,14 @@
-// src/dashboard/layout/DashboardLayout.jsx
 import React from 'react';
-import Sidebar from './Sidebar'; // Import your Sidebar component
-import { Outlet } from 'react-router-dom'; // Import Outlet to render nested routes
+import Sidebar from './Sidebar'; 
+import { Outlet } from 'react-router-dom'; 
 
 const DashboardLayout = () => {
   return (
     <div className="flex">
-      <Sidebar /> {/* Render the Sidebar */}
-      <main className="flex-1 p-4">
-        <Outlet /> {/* Render nested routes here */}
-      </main>
+      <Sidebar />
+      <div className="flex-1 p-6 bg-gray-100 min-h-screen">
+        <Outlet />
+      </div>
     </div>
   );
 };
