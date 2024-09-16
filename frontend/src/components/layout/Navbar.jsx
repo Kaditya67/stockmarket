@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Navbar = ({ onLoginClick, onSignupClick }) => {
@@ -6,7 +7,7 @@ const Navbar = ({ onLoginClick, onSignupClick }) => {
       <div className="container mx-auto flex justify-between items-center px-4">
         <div className="flex items-center space-x-8">
           <div className="text-lg font-bold">
-          <Link to="/">StockVista</Link>
+            <Link to="/">StockVista</Link>
           </div>
         </div>
         <div className="flex space-x-1">

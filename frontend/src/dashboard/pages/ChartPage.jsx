@@ -1,11 +1,13 @@
+// Example of Chart component
 import React from 'react';
 
-const ChartPage = () => {
+const Chart = () => {
   return (
     <div>
-      <p>This is the chart page.</p>
+      <h1>Chart Page</h1>
+      {/* Your chart implementation */}
     </div>
   );
 };
 
-export default ChartPage;
+export default Chart;

@@ -1,15 +1,24 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
+    // Handle form submission logic here (API call, authentication, etc.)
     console.log('Username:', username);
     console.log('Password:', password);
+
+    // Assuming the login is successful
+    setLoginSuccess(true);  // Set login success state to true
+    setTimeout(() => {
+      setLoginSuccess(false);  // Hide success message after 3 seconds
+      navigate('/dashboard');  // Redirect to the dashboard page
+    }, 3000);
   };
 
   return (
@@ -55,6 +64,12 @@ const Login = () => {
             Login
           </button>
         </form>
+
+        {loginSuccess && (
+          <div className="mt-4 text-green-600 text-center">
+            User logged in successfully!
+          </div>
+        )}
 
         <p className="mt-6 text-center text-sm">
           Don't have an account? <Link to="/signup" className="text-indigo-600 hover:underline">Sign up</Link>
