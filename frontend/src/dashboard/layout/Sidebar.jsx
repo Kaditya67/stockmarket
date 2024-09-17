@@ -1,103 +1,73 @@
 // src/dashboard/layout/Sidebar.jsx
-import React, { useState } from 'react';
+import React from 'react';
+import { useLocation, Link } from 'react-router-dom';
 import {
   FaHome, FaChartLine, FaFolder, FaChartPie,
   FaBriefcase, FaQuestionCircle, FaInfoCircle, FaSignOutAlt, FaChevronLeft, FaChevronRight,
-  FaBell, FaIndustry, FaCog // Added FaCog for Settings
+  FaBell, FaIndustry, FaCog
 } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 
-const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false); // State for controlling sidebar collapse
+const Sidebar = ({ setIsSidebarCollapsed }) => {
+  const [isCollapsed, setIsCollapsed] = React.useState(false);
+  const location = useLocation(); // Get current location
 
   const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed); // Toggle between collapsed and expanded states
+    const newState = !isCollapsed;
+    setIsCollapsed(newState);
+    setIsSidebarCollapsed(newState); // Pass the new state to DashboardLayout
   };
 
   return (
-    <div className={`h-screen bg-gray-800 text-white ${isCollapsed ? 'w-20' : 'w-64'} transition-width duration-300 flex flex-col`}>
-      
+    <div
+      className={`fixed top-0 left-0 h-full bg-gray-800 text-white ${isCollapsed ? 'w-16' : 'w-48'} transition-width duration-300 flex flex-col`}
+      aria-label="Sidebar"
+    >
       {/* Toggle Button */}
       <div className="p-4 flex justify-between items-center">
-        <h1 className={`${isCollapsed ? 'hidden' : 'block'} text-lg`}>Dashboard</h1>
+        <Link to="/dashboard" className={`flex items-center space-x-2 ${isCollapsed ? 'hidden' : 'block'}`}>
+          <h1 className="text-lg font-semibold">StockVista</h1>
+        </Link>
         <button
           onClick={toggleSidebar}
-          className="text-white focus:outline-none"
+          className="text-white p-2 hover:bg-gray-700 rounded focus:outline-none"
+          aria-label={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
         >
-          {isCollapsed ? <FaChevronRight /> : <FaChevronLeft />}
+          {isCollapsed ? <FaChevronRight size={20} /> : <FaChevronLeft size={20} />}
         </button>
       </div>
 
       {/* Sidebar Links */}
-      <ul className="flex flex-col space-y-4 px-4 mt-6">
-        <li>
-          <Link to="/dashboard/home" className="flex items-center space-x-2">
-            <FaHome size={20} />
-            {!isCollapsed && <span className="text-base">Home</span>}
-          </Link>
-        </li>
-        <li>
-          <Link to="/dashboard/stocks" className="flex items-center space-x-2">
-            <FaFolder size={20} />
-            {!isCollapsed && <span className="text-base">Stocks</span>}
-          </Link>
-        </li>
-        <li>
-          <Link to="/dashboard/charts" className="flex items-center space-x-2">
-            <FaChartLine size={20} />
-            {!isCollapsed && <span className="text-base">Charts</span>}
-          </Link>
-        </li>
-        <li>
-          <Link to="/dashboard/analysis" className="flex items-center space-x-2">
-            <FaChartPie size={20} />
-            {!isCollapsed && <span className="text-base">Analysis</span>}
-          </Link>
-        </li>
-        <li>
-          <Link to="/dashboard/portfolio" className="flex items-center space-x-2">
-            <FaBriefcase size={20} />
-            {!isCollapsed && <span className="text-base">Portfolio</span>}
-          </Link>
-        </li>
-        <li>
-          <Link to="/dashboard/sector" className="flex items-center space-x-2">
-            <FaIndustry size={20} />
-            {!isCollapsed && <span className="text-base">Sector</span>}
-          </Link>
-        </li>
-        <li>
-          <Link to="/dashboard/alert" className="flex items-center space-x-2">
-            <FaBell size={20} />
-            {!isCollapsed && <span className="text-base">Alert</span>}
-          </Link>
-        </li>
-        <li>
-          <Link to="/dashboard/help" className="flex items-center space-x-2">
-            <FaQuestionCircle size={20} />
-            {!isCollapsed && <span className="text-base">Help</span>}
-          </Link>
-        </li>
-        <li>
-          <Link to="/dashboard/about" className="flex items-center space-x-2">
-            <FaInfoCircle size={20} />
-            {!isCollapsed && <span className="text-base">About Us</span>}
-          </Link>
-        </li>
-        <li>
-          <Link to="/dashboard/settings" className="flex items-center space-x-2">
-            <FaCog size={20} />
-            {!isCollapsed && <span className="text-base">Settings</span>}
-          </Link>
-        </li>
-        <li>
-          <Link to="/dashboard/logout" className="flex items-center space-x-2">
-            <FaSignOutAlt size={20} />
-            {!isCollapsed && <span className="text-base">Logout</span>}
-          </Link>
-        </li>
+      <ul className="flex flex-col space-y-4 px-2 mt-6">
+        <SidebarLink to="/dashboard" icon={<FaHome />} label="Home" isCollapsed={isCollapsed} location={location} />
+        <SidebarLink to="/dashboard/stocks" icon={<FaFolder />} label="Stocks" isCollapsed={isCollapsed} location={location} />
+        <SidebarLink to="/dashboard/charts" icon={<FaChartLine />} label="Charts" isCollapsed={isCollapsed} location={location} />
+        <SidebarLink to="/dashboard/analysis" icon={<FaChartPie />} label="Analysis" isCollapsed={isCollapsed} location={location} />
+        <SidebarLink to="/dashboard/portfolio" icon={<FaBriefcase />} label="Portfolio" isCollapsed={isCollapsed} location={location} />
+        <SidebarLink to="/dashboard/sector" icon={<FaIndustry />} label="Sector" isCollapsed={isCollapsed} location={location} />
+        <SidebarLink to="/dashboard/alert" icon={<FaBell />} label="Alert" isCollapsed={isCollapsed} location={location} />
+        <SidebarLink to="/dashboard/help" icon={<FaQuestionCircle />} label="Help" isCollapsed={isCollapsed} location={location} />
+        <SidebarLink to="/dashboard/about" icon={<FaInfoCircle />} label="About Us" isCollapsed={isCollapsed} location={location} />
+        <SidebarLink to="/dashboard/settings" icon={<FaCog />} label="Settings" isCollapsed={isCollapsed} location={location} />
+        <SidebarLink to="/dashboard/logout" icon={<FaSignOutAlt />} label="Logout" isCollapsed={isCollapsed} location={location} />
       </ul>
     </div>
+  );
+};
+
+// Reusable component for sidebar links
+const SidebarLink = ({ to, icon, label, isCollapsed, location }) => {
+  const isActive = location.pathname === to; // Check if the link is active
+  return (
+    <li>
+      <Link
+        to={to}
+        className={`flex items-center space-x-2 text-gray-300 hover:bg-gray-700 rounded p-2 transition-colors duration-200 ${isActive ? 'bg-gray-700' : ''}`}
+        aria-label={label}
+      >
+        {React.cloneElement(icon, { size: 20 })}
+        {!isCollapsed && <span className={`text-base ${isActive ? 'font-semibold text-white' : ''}`}>{label}</span>}
+      </Link>
+    </li>
   );
 };
 

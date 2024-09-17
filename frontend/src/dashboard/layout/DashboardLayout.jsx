@@ -1,14 +1,17 @@
-import React from 'react';
-import Sidebar from './Sidebar'; 
-import { Outlet } from 'react-router-dom'; 
+// src/dashboard/layout/DashboardLayout.jsx
+import React, { useState } from 'react';
+import Sidebar from './Sidebar'; // Ensure this import is correct
+import { Outlet } from 'react-router-dom';
 
 const DashboardLayout = () => {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
   return (
     <div className="flex">
-      <Sidebar />
-      <div className="flex-1 p-6 bg-gray-100 min-h-screen">
+      <Sidebar setIsSidebarCollapsed={setIsSidebarCollapsed} />
+      <main className={`flex-1 transition-all duration-300 ${isSidebarCollapsed ? 'ml-16' : 'ml-48'}`}>
         <Outlet />
-      </div>
+      </main>
     </div>
   );
 };

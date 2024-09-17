@@ -45,7 +45,7 @@ function App() {
         
         {/* Dashboard Routes without Navbar */}
         <Route path="/dashboard/*" element={<DashboardLayout />}>
-          <Route path="home" element={<HomePage />} />
+          <Route path="" element={<HomePage />} />
           <Route path="stocks" element={<StocksPage />} />
           <Route path="chart" element={<ChartPage />} />
           <Route path="analysis" element={<AnalysisPage />} />
