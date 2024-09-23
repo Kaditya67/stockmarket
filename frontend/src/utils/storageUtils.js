@@ -1,5 +1,3 @@
-// utils/storageUtils.js
-
 // Function to store stock data in local storage
 export const storeStockData = (data) => {
     localStorage.setItem('stockData', JSON.stringify(data));

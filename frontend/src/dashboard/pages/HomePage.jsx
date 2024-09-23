@@ -66,8 +66,8 @@ const HomePage = () => {
           <p className="text-sm text-gray-500">-0.73% today</p>
         </div>
         <div className="bg-white shadow-md rounded-lg p-4">
-          <h2 className="text-xl font-semibold mb-2">AMZN</h2>
-          <p className="text-gray-600">Amazon.com Inc.</p>
+          <h2 className="text-xl font-semibold mb-2">MSFT</h2>
+          <p className="text-gray-600">Microsoft Inc.</p>
           <p className="text-2xl font-bold text-green-600">$3332.88</p>
           <p className="text-sm text-gray-500">+2.31% today</p>
         </div>
