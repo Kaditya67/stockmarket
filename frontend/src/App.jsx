@@ -21,6 +21,8 @@ import PortfolioPage from './dashboard/pages/PortfolioPage';
 import HelpPage from './dashboard/pages/HelpPage';
 import AboutPage from './dashboard/pages/AboutPage';
 import LogoutPage from './dashboard/pages/LogoutPage';
+import AlertPage from './dashboard/pages/AlertPage';
+import SectorPage from './dashboard/pages/SectorPage';
 
 function MainLayout({ children }) {
   return (
@@ -47,9 +49,11 @@ function App() {
         <Route path="/dashboard/*" element={<DashboardLayout />}>
           <Route path="" element={<HomePage />} />
           <Route path="stocks" element={<StocksPage />} />
-          <Route path="chart" element={<ChartPage />} />
+          <Route path="Chart" element={<ChartPage />} />
           <Route path="analysis" element={<AnalysisPage />} />
           <Route path="portfolio" element={<PortfolioPage />} />
+          <Route path="sector" element={<SectorPage />} />
+          <Route path="alert" element={<AlertPage />} />
           <Route path="help" element={<HelpPage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="logout" element={<LogoutPage />} />
