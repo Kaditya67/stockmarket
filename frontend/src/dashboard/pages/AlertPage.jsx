@@ -1,24 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const AlertPage = () => {
-    const [alerts, setAlerts] = useState([
-        // Sample alerts (You can replace these with data fetched from the server)
-        { id: 1, symbol: 'AAPL', type: 'Price above', threshold: '150', status: 'Triggered' },
-        { id: 2, symbol: 'GOOGL', type: 'EMA Crossover', threshold: '12-day EMA crosses 26-day EMA', status: 'Pending' }
-    ]);
-
+    const [alerts, setAlerts] = useState([]);
     const [newAlert, setNewAlert] = useState({
         symbol: '',
         type: 'price',
         threshold: ''
     });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const handleDeleteAlert = (id) => {
-        setAlerts(alerts.filter(alert => alert.id !== id));
+    useEffect(() => {
+        const fetchAlerts = async () => {
+            try {
+                // Make sure your API URL is correct
+                const apiUrl = import.meta.env.VITE_API_URL; 
+                const response = await axios.get(`${apiUrl}/api/alerts`); // Make sure backend has this route
+                setAlerts(response.data);
+                setLoading(false);
+            } catch (err) {
+                console.error('Error fetching alerts:', err);
+                setError('Failed to load alerts. Please try again later.');
+                setLoading(false);
+            }
+        };
+
+        fetchAlerts();
+    }, []);
+
+    const handleDeleteAlert = async (id) => {
+        try {
+            const apiUrl = import.meta.env.VITE_API_URL;
+            await axios.delete(`${apiUrl}/api/alerts/${id}`);
+            setAlerts(alerts.filter(alert => alert.id !== id));
+        } catch (err) {
+            console.error('Error deleting alert:', err);
+        }
     };
 
-    const handleClearAlerts = () => {
-        setAlerts([]);
+    const handleClearAlerts = async () => {
+        try {
+            const apiUrl = import.meta.env.VITE_API_URL;
+            await axios.delete(`${apiUrl}/api/alerts/clear`); // Make sure the backend route exists
+            setAlerts([]);
+        } catch (err) {
+            console.error('Error clearing alerts:', err);
+        }
     };
 
     const handleInputChange = (e) => {
@@ -26,19 +54,26 @@ const AlertPage = () => {
         setNewAlert({ ...newAlert, [name]: value });
     };
 
-    const handleAddAlert = (e) => {
+    const handleAddAlert = async (e) => {
         e.preventDefault();
         if (!newAlert.symbol || !newAlert.threshold) {
-            alert("Please enter valid data for the new alert.");
+            alert('Please enter valid data for the new alert.');
             return;
         }
-        const newId = alerts.length ? alerts[alerts.length - 1].id + 1 : 1;
-        setAlerts([
-            ...alerts,
-            { id: newId, symbol: newAlert.symbol, type: newAlert.type, threshold: newAlert.threshold, status: 'Pending' }
-        ]);
-        setNewAlert({ symbol: '', type: 'price', threshold: '' });
+
+        try {
+            const apiUrl = import.meta.env.VITE_API_URL;
+            const response = await axios.post(`${apiUrl}/api/alerts`, newAlert); // Post the new alert
+            setAlerts([...alerts, response.data]);
+            setNewAlert({ symbol: '', type: 'price', threshold: '' });
+        } catch (err) {
+            console.error('Error adding alert:', err);
+            alert('Failed to add alert. Please try again.');
+        }
     };
+
+    if (loading) return <div>Loading alerts...</div>;
+    if (error) return <div>{error}</div>;
 
     return (
         <div className="bg-gray-100 min-h-screen flex flex-col justify-center items-center py-10">
@@ -52,7 +87,7 @@ const AlertPage = () => {
                 <h2 className="text-2xl font-semibold text-blue-600 mb-4">Your Active Alerts</h2>
                 {alerts.length ? (
                     <ul className="list-none mb-6">
-                        {alerts.map((alert) => (
+                        {alerts.map(alert => (
                             <li key={alert.id} className="bg-gray-200 rounded-lg p-4 mb-4 shadow-md">
                                 <p className="text-lg"><strong>Stock:</strong> {alert.symbol}</p>
                                 <p className="text-lg"><strong>Alert Type:</strong> {alert.type}</p>
