@@ -40,7 +40,7 @@ const Sidebar = ({ setIsSidebarCollapsed }) => {
       <ul className="flex flex-col space-y-4 px-2 mt-6">
         <SidebarLink to="/dashboard" icon={<FaHome />} label="Home" isCollapsed={isCollapsed} location={location} />
         <SidebarLink to="/dashboard/stocks" icon={<FaFolder />} label="Stocks" isCollapsed={isCollapsed} location={location} />
-        <SidebarLink to="/dashboard/charts" icon={<FaChartLine />} label="Charts" isCollapsed={isCollapsed} location={location} />
+        <SidebarLink to="/dashboard/chart" icon={<FaChartLine />} label="Charts" isCollapsed={isCollapsed} location={location} />
         <SidebarLink to="/dashboard/analysis" icon={<FaChartPie />} label="Analysis" isCollapsed={isCollapsed} location={location} />
         <SidebarLink to="/dashboard/portfolio" icon={<FaBriefcase />} label="Portfolio" isCollapsed={isCollapsed} location={location} />
         <SidebarLink to="/dashboard/sector" icon={<FaIndustry />} label="Sector" isCollapsed={isCollapsed} location={location} />

@@ -49,7 +49,7 @@ function App() {
         <Route path="/dashboard/*" element={<DashboardLayout />}>
           <Route path="" element={<HomePage />} />
           <Route path="stocks" element={<StocksPage />} />
-          <Route path="Chart" element={<ChartPage />} />
+          <Route path="chart" element={<ChartPage />} />
           <Route path="analysis" element={<AnalysisPage />} />
           <Route path="portfolio" element={<PortfolioPage />} />
           <Route path="sector" element={<SectorPage />} />
