@@ -10,12 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.2",
     "apexcharts": "^3.54.0",
     "axios": "^1.7.7",
     "chart.js": "^4.4.4",
     "chartjs-adapter-date-fns": "^3.0.0",
+    "datatables.net-dt": "^2.1.8",
     "framer-motion": "^11.3.19",
-    "highcharts": "^11.4.7",
+    "highcharts": "^11.4.8",
     "highcharts-react-official": "^3.2.1",
     "react": "^18.3.1",
     "react-apexcharts": "^1.4.1",
