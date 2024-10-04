@@ -1,82 +1,55 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
-  const [username, setUsername] = useState('');
+const LoginPage = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here (API call, authentication, etc.)
-    console.log('Username:', username);
-    console.log('Password:', password);
-
-    // Assuming the login is successful
-    setLoginSuccess(true);  // Set login success state to true
-    setTimeout(() => {
-      setLoginSuccess(false);  // Hide success message after 3 seconds
-      navigate('/dashboard');  // Redirect to the dashboard page
-    }, 3000);
+    try {
+      const res = await axios.post('/api/users/login', { email, password });
+      if (res.data.success) {
+        navigate('/dashboard'); // Redirect to dashboard after login
+      }
+    } catch (err) {
+      setError(err.response.data.message); // Display error if user doesn't exist
+    }
   };
 
   return (
-    <div 
-      className="flex items-center justify-center min-h-screen bg-cover bg-center" 
-      style={{ backgroundImage: `url('/static/images/stock-market.png')` }}
-    >
-      <div className="container max-w-sm bg-white bg-opacity-80 p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
-
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">User ID</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Enter Username"
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="loginPassword" className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              id="loginPassword"
-              name="password"
-              placeholder="Password"
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <div className="mb-4 text-right">
-            <Link to="/forgotpassword" className="text-sm text-indigo-600 hover:underline">Forgot Password?</Link>
-          </div>
-
-          <button type="submit" className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-300">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 space-y-3 bg-white rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold text-center">Login</h2>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            required
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+          <button type="submit" className="w-full p-2 font-bold text-white bg-blue-500 rounded">
             Login
           </button>
         </form>
-
-        {loginSuccess && (
-          <div className="mt-4 text-green-600 text-center">
-            User logged in successfully!
-          </div>
-        )}
-
-        <p className="mt-6 text-center text-sm">
-          Don't have an account? <Link to="/signup" className="text-indigo-600 hover:underline">Sign up</Link>
-        </p>
+        {error && <p className="text-red-500">{error}</p>}
+        <p className="text-center">Don't have an account? <a href="/signup" className="text-blue-500">Sign Up</a></p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default LoginPage;
