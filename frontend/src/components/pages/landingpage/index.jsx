@@ -1,36 +1,39 @@
-import { useEffect, useState } from 'react';
-import Image from '../../../assets/images/Image.jpg';
+// src/components/pages/landingpage/Index.jsx
+
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom'; // Import useLocation to get the state
 import Image2 from '../../../assets/images/Image2.webp';
 import Image3 from '../../../assets/images/Image3.webp';
 
-const Body = () => {
-  const [isSticky, setIsSticky] = useState(false);
-
-  const handleScroll = () => {
-    const triggerElement = document.getElementById('images-section');
-    const endElement = document.getElementById('images-end');
-    if (triggerElement && endElement) {
-      const scrollTop = window.scrollY;
-      const offsetTop = triggerElement.offsetTop;
-      const offsetBottom = endElement.offsetTop - window.innerHeight;
-
-      if (scrollTop >= offsetTop && scrollTop < offsetBottom) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-    }
-  };
+const Index = () => {
+  const [showMessage, setShowMessage] = useState(false);
+  const [logoutMessage, setLogoutMessage] = useState('');
+  const location = useLocation(); // Get the location object
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    // Check if there's a logout message passed through location state
+    const message = location.state?.logoutMessage; // Use location.state
+    if (message) {
+      setLogoutMessage(message);
+      setShowMessage(true);
+
+      // Automatically hide the message after 3 seconds
+      const timer = setTimeout(() => {
+        setShowMessage(false);
+      }, 2000); // Hide message after 3 seconds
+
+      // Clean up timer
+      return () => clearTimeout(timer);
+    }
+  }, [location.state]); // Add location.state to the dependency array
 
   return (
     <div>
+      {showMessage && (
+        <div className="text-green-500 text-center mb-4 flex justify-center items-center">
+          <span>{logoutMessage}</span>
+        </div>
+      )}
       <div className="bg-gradient-to-br from-gray-800 to-[#1BE7FF] my-8 p-8 flex flex-col items-center justify-center h-[75vh] shadow-xl">
         <h1 className="text-white text-4xl font-bold mb-6">Welcome to Our Trading Platform</h1>
         
@@ -40,7 +43,7 @@ const Body = () => {
       </div>
 
       {/* Sticky Wrapper */}
-      <div className={`relative ${isSticky ? 'sticky top-0 bg-black z-10 shadow-md' : ''}`}>
+      <div className={`relative`}>
         <div id="strategy" className="flex justify-center py-4 bg-[#F4F4F9]-900">
           <div className="flex space-x-20">
             <span className="text-black text-3xl font-semibold ">Invest in Best with Us</span>
@@ -99,4 +102,4 @@ const Body = () => {
   );
 };
 
-export default Body;
+export default Index;
