@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 
 // StockData Schema
 const stockDataSchema = new mongoose.Schema({
-    symbol: { type: String, required: true }, // Stock symbol
-    date: { type: Date, required: true },     // Date of the stock data
+    symbol: { type: String, required: true }, 
+    date: { type: Date, required: true },     
     open: { type: Number, required: true },
     high: { type: Number, required: true },
     low: { type: Number, required: true },
@@ -15,9 +15,9 @@ const StockData = mongoose.model('StockData', stockDataSchema);
 
 // EmaData Schema
 const emaDataSchema = new mongoose.Schema({
-    symbol: { type: String, required: true }, // Stock symbol
-    date: { type: Date, required: true },     // Date of the EMA calculation
-    ema7: { type: Number, required: false },  // Make these fields optional
+    symbol: { type: String, required: true },
+    date: { type: Date, required: true },    
+    ema7: { type: Number, required: false }, 
     ema20: { type: Number, required: false },
     ema50: { type: Number, required: false },
     ema100: { type: Number, required: false },

@@ -1,14 +1,11 @@
 import express from 'express';
 import { StockData, EmaData } from '../models/StockData.js';
-import { RsiData } from '../models/RsiData.js'; // Import the RSI model
+import { RsiData } from '../models/RsiData.js';
 import stockServices from '../services/stockServices.js';
 
 const router = express.Router();
-
-// List of hardcoded stock symbols
 const symbols = ['AAPL', 'GOOGL', 'MSFT'];
 
-// Utility function to validate stock data
 const isValidStockData = (data) => {
     return data &&
         typeof data['1. open'] === 'string' &&
@@ -18,25 +15,25 @@ const isValidStockData = (data) => {
         typeof data['5. volume'] === 'string';
 };
 
-// Function to calculate EMA
 const calculateEMA = (period, prices) => {
+    if (prices.length < period) return [];
+
     const k = 2 / (period + 1);
     let emaArray = [];
-    let previousEma;
+    let previousEma = prices[0];
 
     prices.forEach((price, index) => {
         if (index === 0) {
-            previousEma = price; // First EMA is the first price
+            emaArray.push(previousEma);
         } else {
             previousEma = price * k + previousEma * (1 - k);
+            emaArray.push(previousEma);
         }
-        emaArray.push(previousEma);
     });
 
     return emaArray;
 };
 
-// Function to calculate RSI and RS
 const calculateRSI = (prices, period = 14) => {
     if (prices.length < period) return { rs: null, rsi: null };
 
@@ -45,179 +42,128 @@ const calculateRSI = (prices, period = 14) => {
 
     for (let i = 1; i < period; i++) {
         const difference = prices[i] - prices[i - 1];
-        if (difference > 0) {
-            gains.push(difference);
-        } else {
-            losses.push(Math.abs(difference));
-        }
+        if (difference > 0) gains.push(difference);
+        else losses.push(Math.abs(difference));
     }
 
-    const averageGain = gains.reduce((a, b) => a + b, 0) / period;
-    const averageLoss = losses.reduce((a, b) => a + b, 0) / period;
+    let averageGain = gains.reduce((a, b) => a + b, 0) / period;
+    let averageLoss = losses.reduce((a, b) => a + b, 0) / period;
 
-    if (averageLoss === 0) return { rs: null, rsi: 100 }; // Handle the case where averageLoss is zero
+    if (averageLoss === 0) return { rs: null, rsi: 100 };
 
-    const rs = averageGain / averageLoss;
-    const rsi = 100 - (100 / (1 + rs));
+    let rs = averageGain / averageLoss;
+    let rsi = 100 - (100 / (1 + rs));
+
+    for (let i = period; i < prices.length; i++) {
+        const difference = prices[i] - prices[i - 1];
+        const gain = difference > 0 ? difference : 0;
+        const loss = difference < 0 ? Math.abs(difference) : 0;
+
+        averageGain = ((averageGain * (period - 1)) + gain) / period;
+        averageLoss = ((averageLoss * (period - 1)) + loss) / period;
+
+        rs = averageGain / averageLoss;
+        rsi = 100 - (100 / (1 + rs));
+    }
 
     return { rs, rsi };
 };
 
-// Endpoint to fetch and store stock data for the hardcoded symbols from Alpha Vantage
+// Fetch and store stock data for the hardcoded symbols from Alpha Vantage
 router.get('/multiple', async (req, res) => {
     try {
-        for (const symbol of symbols) {
+        const promises = symbols.map(async (symbol) => {
             const timeSeries = await stockServices(symbol);
-
-            if (timeSeries) {
-                const closePrices = []; // Store close prices for RSI and EMA calculation
-                const dateArray = [];   // Store dates corresponding to the close prices
-
-                for (const [date, values] of Object.entries(timeSeries)) {
-                    if (isValidStockData(values)) {
-                        // Store close prices and dates
-                        closePrices.push(parseFloat(values['4. close']));
-                        dateArray.push(date);
-
-                        // Create a new StockData document
-                        const stockData = new StockData({
-                            symbol,
-                            date: new Date(date),
-                            open: parseFloat(values['1. open']),
-                            high: parseFloat(values['2. high']),
-                            low: parseFloat(values['3. low']),
-                            close: parseFloat(values['4. close']),
-                            volume: parseInt(values['5. volume']),
-                        });
-
-                        // Save the document to MongoDB
-                        await stockData.save();
-                    } else {
-                        console.warn(`Invalid data for ${symbol} on ${date}:`, values);
-                    }
-                }
-
-                console.log(`Data length for ${symbol}:`, closePrices.length);
-
-                // Calculate and store EMAs and RSI if data is sufficient
-                const emaData = {};
-                if (closePrices.length >= 200) {
-                    emaData.ema7 = calculateEMA(7, closePrices);
-                    emaData.ema20 = calculateEMA(20, closePrices);
-                    emaData.ema50 = calculateEMA(50, closePrices);
-                    emaData.ema100 = calculateEMA(100, closePrices);
-                    emaData.ema150 = calculateEMA(150, closePrices);
-                    emaData.ema200 = calculateEMA(200, closePrices);
-                } else if (closePrices.length >= 50) {
-                    emaData.ema7 = calculateEMA(7, closePrices);
-                    emaData.ema20 = calculateEMA(20, closePrices);
-                    emaData.ema50 = calculateEMA(50, closePrices);
-                }
-
-                for (let i = 0; i <= closePrices.length - 14; i++) {
-                    const { rs, rsi } = calculateRSI(closePrices.slice(i, i + 14));
-
-                    if (rsi !== null) {
-                        const emaEntry = {
-                            symbol,
-                            date: new Date(dateArray[i + 13]),
-                            ema7: emaData.ema7 ? emaData.ema7[i + 6] || null : null,
-                            ema20: emaData.ema20 ? emaData.ema20[i + 19] || null : null,
-                            ema50: emaData.ema50 ? emaData.ema50[i + 49] || null : null,
-                            ema100: emaData.ema100 ? emaData.ema100[i + 99] || null : null,
-                            ema150: emaData.ema150 ? emaData.ema150[i + 149] || null : null,
-                            ema200: emaData.ema200 ? emaData.ema200[i + 199] || null : null,
-                        };
-
-                        // Create and save EmaData document if at least one EMA field is available
-                        if (Object.values(emaEntry).some(value => value !== null)) {
-                            const emaDataDoc = new EmaData(emaEntry);
-                            await emaDataDoc.save();
-                        }
-
-                        const rsiDataDoc = new RsiData({
-                            symbol,
-                            date: new Date(dateArray[i + 13]),
-                            rs: rs,
-                            rsi: rsi,
-                        });
-
-                        await rsiDataDoc.save();
-                    }
-                }
-
-                console.log(`Data and EMA/RSI values for ${symbol} have been processed.`);
-            } else {
+            if (!timeSeries || Object.keys(timeSeries).length === 0) {
                 console.warn(`No time series data available for ${symbol}`);
+                return;
             }
-        }
 
+            const closePrices = [];
+            const dateArray = [];
+            const stockDataArray = [];
+            const emaDataArray = [];
+            const rsiDataArray = [];
+
+            for (const [date, values] of Object.entries(timeSeries)) {
+                if (isValidStockData(values)) {
+                    closePrices.push(parseFloat(values['4. close']));
+                    dateArray.push(date);
+
+                    const stockData = new StockData({
+                        symbol,
+                        date: new Date(date),
+                        open: parseFloat(values['1. open']),
+                        high: parseFloat(values['2. high']),
+                        low: parseFloat(values['3. low']),
+                        close: parseFloat(values['4. close']),
+                        volume: parseInt(values['5. volume']),
+                    });
+                    stockDataArray.push(stockData);
+                } else {
+                    console.warn(`Invalid data for ${symbol} on ${date}:`, values);
+                }
+            }
+
+            console.log(`Data length for ${symbol}:`, closePrices.length);
+
+            if (closePrices.length >= 200) {
+                emaDataArray.push(
+                    { symbol, date: new Date(dateArray[closePrices.length - 1]), ema7: calculateEMA(7, closePrices) },
+                    { symbol, date: new Date(dateArray[closePrices.length - 1]), ema20: calculateEMA(20, closePrices) },
+                    { symbol, date: new Date(dateArray[closePrices.length - 1]), ema50: calculateEMA(50, closePrices) },
+                    { symbol, date: new Date(dateArray[closePrices.length - 1]), ema100: calculateEMA(100, closePrices) },
+                    { symbol, date: new Date(dateArray[closePrices.length - 1]), ema150: calculateEMA(150, closePrices) },
+                    { symbol, date: new Date(dateArray[closePrices.length - 1]), ema200: calculateEMA(200, closePrices) }
+                );
+            } else if (closePrices.length >= 50) {
+                emaDataArray.push(
+                    { symbol, date: new Date(dateArray[closePrices.length - 1]), ema7: calculateEMA(7, closePrices) },
+                    { symbol, date: new Date(dateArray[closePrices.length - 1]), ema20: calculateEMA(20, closePrices) },
+                    { symbol, date: new Date(dateArray[closePrices.length - 1]), ema50: calculateEMA(50, closePrices) }
+                );
+            }
+
+            for (let i = 0; i <= closePrices.length - 14; i++) {
+                const { rs, rsi } = calculateRSI(closePrices.slice(i, i + 14));
+                if (rsi !== null) {
+                    rsiDataArray.push(new RsiData({
+                        symbol,
+                        date: new Date(dateArray[i + 13]),
+                        rs,
+                        rsi,
+                    }));
+                }
+            }
+
+            // Save all stock, EMA, and RSI data in batches
+            try {
+                await StockData.insertMany(stockDataArray);
+            } catch (insertError) {
+                console.error(`Error inserting stock data for ${symbol}:`, insertError.message);
+            }
+
+            try {
+                await EmaData.insertMany(emaDataArray);
+            } catch (insertError) {
+                console.error(`Error inserting EMA data for ${symbol}:`, insertError.message);
+            }
+
+            try {
+                await RsiData.insertMany(rsiDataArray);
+            } catch (insertError) {
+                console.error(`Error inserting RSI data for ${symbol}:`, insertError.message);
+            }
+
+            console.log(`Data and EMA/RSI values for ${symbol} have been processed.`);
+        });
+
+        await Promise.all(promises);
         res.status(200).json({ message: 'Data, EMA, and RSI values fetched and stored in MongoDB successfully' });
     } catch (error) {
         console.error("Error storing stock data and EMAs/RSIs:", error.message);
         res.status(500).json({ error: 'Error fetching or storing stock data and EMAs/RSIs' });
     }
 });
-
-
-// Endpoint to fetch the latest entry for each symbol
-router.get('/data', async (req, res) => {
-    try {
-        // Fetch the latest stock data for each symbol
-        const latestStocks = await StockData.find({ symbol: { $in: symbols } })
-            .sort({ symbol: 1, date: -1 })
-            .exec();
-
-        // Map to get the latest entry for each symbol
-        const latestStockMap = latestStocks.reduce((acc, stock) => {
-            if (!acc[stock.symbol] || stock.date > acc[stock.symbol].date) {
-                acc[stock.symbol] = stock;
-            }
-            return acc;
-        }, {});
-
-        // Fetch the latest EMA data for each symbol
-        const latestEmas = await EmaData.find({ symbol: { $in: symbols } })
-            .sort({ symbol: 1, date: -1 })
-            .exec();
-
-        // Map to get the latest entry for each symbol
-        const latestEmaMap = latestEmas.reduce((acc, ema) => {
-            if (!acc[ema.symbol] || ema.date > acc[ema.symbol].date) {
-                acc[ema.symbol] = ema;
-            }
-            return acc;
-        }, {});
-
-        // Fetch the latest RSI data for each symbol
-        const latestRsi = await RsiData.find({ symbol: { $in: symbols } })
-            .sort({ symbol: 1, date: -1 })
-            .exec();
-
-        // Map to get the latest entry for each symbol
-        const latestRsiMap = latestRsi.reduce((acc, rsi) => {
-            if (!acc[rsi.symbol] || rsi.date > acc[rsi.symbol].date) {
-                acc[rsi.symbol] = rsi;
-            }
-            return acc;
-        }, {});
-
-        // Combine the latest entries into a single array of JSON objects
-        const combinedData = symbols.map(symbol => ({
-            symbol,
-            stock: latestStockMap[symbol] || {},
-            ema: latestEmaMap[symbol] || {},
-            rsi: latestRsiMap[symbol] || {}
-        }));
-
-        res.status(200).json(combinedData);
-    } catch (error) {
-        console.error("Error fetching latest data from MongoDB:", error.message);
-        res.status(500).json({ error: 'Error fetching latest data from MongoDB' });
-    }
-});
-
-
-
 
 export default router;

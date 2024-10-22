@@ -1,4 +1,3 @@
-// controllers/alertController.js
 let alerts = [];
 
 export const getAllAlerts = (req, res) => {
