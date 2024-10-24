@@ -10,6 +10,8 @@ import Login from "./components/pages/loginpage/Login";
 import SignUp from './components/pages/signuppage/SignUp';
 import StockDataPage from './components/pages/StockDataPage';
 import StockChart from './components/pages/StockChart';
+import ForgetPasswordPage from './components/pages/ForgotPasswordPage';
+import ResetPasswordPage from './components/pages/ResetPasswordPage';
 import DashboardLayout from './dashboard/layout/DashboardLayout';
 
 // Import dashboard pages
@@ -41,6 +43,8 @@ function App() {
         {/* Main Routes with Navbar */}
         <Route path="/" element={<MainLayout><Index /><Charts /><Graph /><Features /></MainLayout>} />
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
+        <Route path="/forgot-password" element={<MainLayout><ForgetPasswordPage /></MainLayout>} />
+        <Route path="/reset-password/:token" element={<MainLayout><ResetPasswordPage /></MainLayout>} />
         <Route path="/signup" element={<MainLayout><SignUp /></MainLayout>} />
         <Route path="/stock-data" element={<MainLayout><StockDataPage /></MainLayout>} />
         <Route path="/stock-chart" element={<MainLayout><StockChart /></MainLayout>} />
