@@ -4,7 +4,7 @@ import { RsiData } from '../models/RsiData.js';
 import stockServices from '../services/stockServices.js';
 
 const router = express.Router();
-const symbols = ['AAPL', 'GOOGL', 'MSFT'];
+const symbols = ['AAPL', 'GOOGL', 'MSFT',];
 
 const isValidStockData = (data) => {
     return data &&
@@ -72,6 +72,7 @@ const calculateRSI = (prices, period = 14) => {
 // Fetch and store stock data for the hardcoded symbols from Alpha Vantage
 router.get('/multiple', async (req, res) => {
     try {
+        console.log("In Multiple")
         const promises = symbols.map(async (symbol) => {
             const timeSeries = await stockServices(symbol);
             if (!timeSeries || Object.keys(timeSeries).length === 0) {

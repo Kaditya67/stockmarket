@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'; // Ensure mongoose is imported
 
 const UserSchema = new mongoose.Schema({
   fullName: {
@@ -21,8 +21,11 @@ const UserSchema = new mongoose.Schema({
     required: true,
     minlength: [6, 'Password must be at least 6 characters long'],
   },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 }, { timestamps: true });
 
 const User = mongoose.model('User', UserSchema);
+
 
 export default User;

@@ -6,7 +6,7 @@ import connectToMongoDb from './db/connectToMongoDb.js';
 import userRoutes from './routes/userRoutes.js';
 import alertRouter from './routes/alerts.router.js';
 import chartRouter from './routes/chart.router.js';
-
+import forgotPasswordRoutes from './routes/ForgetPassword.user.routes.js';
 // Load environment variables
 dotenv.config();
 
@@ -27,6 +27,7 @@ app.use('/api/stocks', stockRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/charts', chartRouter); // Ensure this route is correct
 app.use('/api/alerts', alertRouter); // Register the alerts router
+app.use('/api/users', forgotPasswordRoutes);
 
 // Global Error Handling Middleware
 app.use((err, req, res, next) => {
