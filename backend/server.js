@@ -7,6 +7,7 @@ import userRoutes from './routes/userRoutes.js';
 import alertRouter from './routes/alerts.router.js';
 import chartRouter from './routes/chart.router.js';
 import forgotPasswordRoutes from './routes/ForgetPassword.user.routes.js';
+import ProfileuserRoutes from './routes/profileuser.router.js';
 // Load environment variables
 dotenv.config();
 
@@ -25,9 +26,10 @@ app.use(cors({
 // Routes
 app.use('/api/stocks', stockRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/charts', chartRouter); // Ensure this route is correct
-app.use('/api/alerts', alertRouter); // Register the alerts router
+app.use('/api/charts', chartRouter); 
+app.use('/api/alerts', alertRouter); 
 app.use('/api/users', forgotPasswordRoutes);
+app.use('/api/profileuser', ProfileuserRoutes); 
 
 // Global Error Handling Middleware
 app.use((err, req, res, next) => {

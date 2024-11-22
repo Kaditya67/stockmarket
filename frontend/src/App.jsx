@@ -19,7 +19,7 @@ import HomePage from './dashboard/pages/HomePage';
 import StocksPage from './dashboard/pages/StocksPage';
 import ChartPage from './dashboard/pages/ChartPage';
 import AnalysisPage from './dashboard/pages/AnalysisPage';
-import PortfolioPage from './dashboard/pages/PortfolioPage';
+import ProfilePage from './dashboard/pages/ProfilePage';
 import HelpPage from './dashboard/pages/HelpPage';
 import AboutPage from './dashboard/pages/AboutPage';
 import LogoutPage from './dashboard/pages/LogoutPage';
@@ -55,7 +55,7 @@ function App() {
           <Route path="stocks" element={<StocksPage />} />
           <Route path="chart" element={<ChartPage />} />
           <Route path="analysis" element={<AnalysisPage />} />
-          <Route path="portfolio" element={<PortfolioPage />} />
+          <Route path="profile" element={<ProfilePage />} />
           <Route path="sector" element={<SectorPage />} />
           <Route path="alert" element={<AlertPage />} />
           <Route path="help" element={<HelpPage />} />

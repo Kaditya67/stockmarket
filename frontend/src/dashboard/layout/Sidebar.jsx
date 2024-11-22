@@ -42,7 +42,7 @@ const Sidebar = ({ setIsSidebarCollapsed }) => {
         <SidebarLink to="/dashboard/stocks" icon={<FaFolder />} label="Stocks" isCollapsed={isCollapsed} location={location} />
         <SidebarLink to="/dashboard/chart" icon={<FaChartLine />} label="Charts" isCollapsed={isCollapsed} location={location} />
         <SidebarLink to="/dashboard/analysis" icon={<FaChartPie />} label="Analysis" isCollapsed={isCollapsed} location={location} />
-        <SidebarLink to="/dashboard/portfolio" icon={<FaBriefcase />} label="Portfolio" isCollapsed={isCollapsed} location={location} />
+        <SidebarLink to="/dashboard/profile" icon={<FaBriefcase />} label="Profile" isCollapsed={isCollapsed} location={location} />
         <SidebarLink to="/dashboard/sector" icon={<FaIndustry />} label="Sector" isCollapsed={isCollapsed} location={location} />
         <SidebarLink to="/dashboard/alert" icon={<FaBell />} label="Alert" isCollapsed={isCollapsed} location={location} />
         <SidebarLink to="/dashboard/help" icon={<FaQuestionCircle />} label="Help" isCollapsed={isCollapsed} location={location} />
