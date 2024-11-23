@@ -2,40 +2,43 @@ import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-export const signup = async (req, res) => {
-  const { fullName, username, email, password, confirmPassword } = req.body;
+export const postSignup = async (req, res) => {
+  console.log("Signup request body:", req.body); // Debugging line
+  const { fullName, username, email, password } = req.body;
 
   // Validate required fields
-  if (!fullName || !username || !email || !password || !confirmPassword) {
+  if (!fullName || !username || !email || !password) {
+    console.log("Missing required fields"); // Debugging line
     return res.status(400).json({ message: 'All fields are required' });
-  }
-
-  // Check if passwords match
-  if (password !== confirmPassword) {
-    return res.status(400).json({ message: 'Passwords do not match' });
   }
 
   try {
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log("User already exists"); // Debugging line
       return res.status(400).json({ message: 'User already exists' });
     }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("Password hashed successfully"); // Debugging line
 
     // Create new user
     const newUser = new User({ fullName, username, email, password: hashedPassword });
     await newUser.save();
+    console.log("User created successfully"); // Debugging line
 
     res.status(201).json({ success: true, message: 'User created successfully' });
   } catch (err) {
-    console.error(err); // Log error for debugging
+    console.error("Error during signup:", err); // Debugging line
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
 
+export const getSignup = async(req, res) => {
+  res.status(200).json({ message: 'This is get from signup' });
+};
 
 // Login controller (same as before)
 export const login = async (req, res) => {
@@ -60,7 +63,7 @@ export const login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ success: true, token });
   } catch (err) {
-    console.error(err); // Log error to console for debugging
+    console.error("Error during login:", err); // Debugging line
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };

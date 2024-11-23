@@ -28,7 +28,7 @@ app.use('/api/stocks', stockRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/charts', chartRouter); 
 app.use('/api/alerts', alertRouter); 
-app.use('/api/users', forgotPasswordRoutes);
+app.use('/api/user', forgotPasswordRoutes);
 app.use('/api/profileuser', ProfileuserRoutes); 
 
 // Global Error Handling Middleware

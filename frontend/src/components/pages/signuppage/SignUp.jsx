@@ -19,6 +19,9 @@ const SignupPage = () => {
     setLoading(true); // Start loading
     setError(""); // Reset error
 
+    // Debugging: Log input data
+    console.log("Signup data:", { fullName, username, email, password, confirmPassword });
+
     if (password !== confirmPassword) {
       setError("Passwords don't match");
       setLoading(false); // End loading
@@ -26,17 +29,32 @@ const SignupPage = () => {
     }
 
     try {
-      const res = await axios.post("/api/users/signup", {
+      console.log("Sending request to backend...");
+
+      const res = await axios.post("http://localhost:5000/api/users/signup", {
         fullName,
         username,
         email,
         password,
       });
+
+      // Debugging: Log the response
+      console.log("Response from backend:", res);
+
       if (res.data.success) {
         navigate("/dashboard"); // Redirect to dashboard after signup
+      } else {
+        setError(res.data.message); // Display error message from backend
       }
     } catch (err) {
-      setError(err.response.data.message); // Display error message
+      // Debugging: Log the error
+      console.error("Error during signup:", err);
+
+      if (err.response) {
+        setError(err.response.data.message); // Display server error message
+      } else {
+        setError("An unexpected error occurred");
+      }
     } finally {
       setLoading(false); // End loading
     }
@@ -53,7 +71,7 @@ const SignupPage = () => {
     >
       <div className="w-full max-w-md p-8 space-y-6 bg-white bg-opacity-25 rounded-lg shadow-lg">
         <h2 className="text-4xl font-bold text-center">
-          <box-icon name="user" size="lg" color="white"></box-icon> {/* Adjusted icon size */}
+          <box-icon name="user" size="lg" color="white"></box-icon>
         </h2>
         <form onSubmit={handleSignup} className="space-y-6">
           {/* Full Name Input */}
@@ -138,10 +156,10 @@ const SignupPage = () => {
 
         {/* Links for Login */}
         <p className="flex justify-center">
-  <a href="/login" className="text-white hover:text-blue-500">
-    Already have an account?
-  </a>
-</p>
+          <a href="/login" className="text-white hover:text-blue-500">
+            Already have an account?
+          </a>
+        </p>
       </div>
     </div>
   );
