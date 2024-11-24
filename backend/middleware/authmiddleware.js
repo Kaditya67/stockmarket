@@ -1,17 +1,21 @@
-import jwt from 'jsonwebtoken';
-
-export const protectRoute = (req, res, next) => {
-  const token = req.header('Authorization')?.split(' ')[1]; // Bearer token format
-
-  if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
+const authMiddleware = (req, res, next) => {
+  // Check if the session exists and contains user data
+  if (!req.session || !req.session.userId) {
+    return res.status(401).json({ message: 'Unauthorized: No active session' });
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Add user data to the request object
-    next();
-  } catch (error) {
-    res.status(401).json({ message: 'Token is not valid' });
-  }
+  // Attach user details from session to the request object for downstream usage
+  req.user = {
+    id: req.session.userId,
+    username: req.session.username,
+    email: req.session.email,
+  };
+
+  next(); // Proceed to the next middleware or route handler
 };
+
+// Exporting using CommonJS
+export default authMiddleware;
+
+// For ES module usage, if needed:
+// export default authMiddleware;

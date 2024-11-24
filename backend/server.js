@@ -8,6 +8,7 @@ import alertRouter from './routes/alerts.router.js';
 import chartRouter from './routes/chart.router.js';
 import forgotPasswordRoutes from './routes/ForgetPassword.user.routes.js';
 import ProfileuserRoutes from './routes/profileuser.router.js';
+
 // Load environment variables
 dotenv.config();
 
@@ -15,6 +16,14 @@ const app = express();
 
 // Middleware to parse JSON
 app.use(express.json());
+
+// Configure CORS to allow credentials
+const corsOptions = {
+    origin: 'http://localhost:5173',  // Frontend URL
+    credentials: true,               // Allow cookies and credentials
+  };
+  
+  app.use(cors(corsOptions));
 
 // Use CORS middleware
 app.use(cors({

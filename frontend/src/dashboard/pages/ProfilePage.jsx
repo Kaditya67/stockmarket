@@ -1,20 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Profile = () => {
-  const [user, setUser] = useState({
-    avatar: `https://api.dicebear.com/6.x/avataaars/svg?seed=anime-${Math.random()}`,
-  });
-
+  const [user, setUser] = useState(null); // Fetch user data dynamically
   const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState({
-    name: user.name,
-    email: user.email,
-    username: "",
-    password: "",
-    confirmPassword: "",
-  });
-
+  const [formData, setFormData] = useState({});
   const [error, setError] = useState("");
+
+  // Fetch user details from API on component mount
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:5000/api/profileuser/session-profile', {
+          withCredentials: true,  // This ensures cookies are sent with the request
+        });
+        
+        setUser(response.data);
+        setFormData({
+          name: response.data.name || "",
+          email: response.data.email || "",
+          username: response.data.username || "",
+          password: "",
+          confirmPassword: "",
+        });
+      } catch (err) {
+        console.error("Failed to fetch user data:", err);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleEdit = () => {
     setEditMode(!editMode);
@@ -29,29 +44,46 @@ const Profile = () => {
     }));
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-    setUser({
-      ...user,
-      name: formData.name,
-      email: formData.email,
-    });
-    setEditMode(false);
-    setFormData({
-      name: "",
-      email: "",
-      username: "",
-      password: "",
-      confirmPassword: "",
-    });
+
+    try {
+      const response = await axios.put(
+        "http://localhost:5000/api/users/profile",
+        {
+          name: formData.name,
+          email: formData.email,
+          username: formData.username,
+          password: formData.password,
+        },
+        { withCredentials: true }
+      );
+
+      setUser(response.data); // Update local user data
+      setEditMode(false); // Exit edit mode
+      setFormData({ ...formData, password: "", confirmPassword: "" }); // Reset sensitive fields
+    } catch (err) {
+      console.error("Failed to update profile:", err);
+      setError(err.response?.data?.message || "Failed to update profile");
+    }
   };
 
-  const handleRemove = () => {
-    alert("Account removed");
+  const handleRemove = async () => {
+    try {
+      await axios.delete("http://localhost:5000/api/users/delete", {
+        withCredentials: true,
+      });
+      alert("Account removed successfully");
+      // Redirect or update UI after deletion
+    } catch (err) {
+      console.error("Failed to delete account:", err);
+    }
   };
+
+  if (!user) return <div>Loading...</div>;
 
   return (
     <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 min-h-screen">
@@ -59,13 +91,13 @@ const Profile = () => {
       <div className="profile-header flex flex-col items-center py-10 bg-gray-700 text-white shadow-md">
         <div className="relative mb-4">
           <img
-            src={user.avatar}
+            src={
+              user.avatar ||
+              `https://api.dicebear.com/6.x/avataaars/svg?seed=anime-${Math.random()}`
+            }
             alt="User Avatar"
             className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
           />
-          <div className="absolute bottom-0 right-0 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center text-white">
-            ✎
-          </div>
         </div>
         <h2 className="text-3xl font-bold">{user.name || "Your Name"}</h2>
         <p className="text-xl">{user.email || "your-email@example.com"}</p>
