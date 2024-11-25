@@ -52,7 +52,7 @@ const Profile = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:5000/api/users/profile",
+        "http://localhost:5000/api/profileuser/profile",
         {
           name: formData.name,
           email: formData.email,
@@ -73,7 +73,7 @@ const Profile = () => {
 
   const handleRemove = async () => {
     try {
-      await axios.delete("http://localhost:5000/api/users/delete", {
+      await axios.delete("http://localhost:5000/api/profileuser/delete", {
         withCredentials: true,
       });
       alert("Account removed successfully");
