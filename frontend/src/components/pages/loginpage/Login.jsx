@@ -19,6 +19,7 @@ const LoginPage = () => {
     try {
       const res = await axios.post("http://localhost:5000/api/users/login", { email, password });
       if (res.data.success) {
+        console.log(res);
         navigate("/dashboard"); // Redirect to dashboard after login
       }
     } catch (err) {

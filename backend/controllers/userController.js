@@ -40,7 +40,7 @@ export const getSignup = async(req, res) => {
   res.status(200).json({ message: 'This is get from signup' });
 };
 
-// Login controller (same as before)
+// Login controller 
 export const login = async (req, res) => {
   const { email, password } = req.body;
 

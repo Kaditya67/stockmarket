@@ -67,7 +67,7 @@ export const deleteAccount = async (req, res) => {
 };
 
 // Login Controller (Session-based)
-export const login = async (req, res) => {
+
   const { email, password } = req.body;
 
   try {
